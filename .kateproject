@@ -1,0 +1,7 @@
+{
+  "name": "Blorg"
+, "files": [ { "git": 1 } ]
+, "build": {
+    "build": "mix compile"
+  }
+}
