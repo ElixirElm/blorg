@@ -19,3 +19,6 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+import "./hide_with_script"
+const elmApp = Elm.Main.fullscreen();
