@@ -3,6 +3,7 @@ defmodule Blorg.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"
-    assert html_response(conn, 200) =~ "Welcome to Phoenix!"
+    response = html_response(conn, 200)
+    assert  response =~ "Blorg"
   end
 end

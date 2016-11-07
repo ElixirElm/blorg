@@ -23,4 +23,17 @@ defmodule Blorg.Router do
   # scope "/api", Blorg do
   #   pipe_through :api
   # end
+  
+
+  scope "/api", Blorg.API do
+    pipe_through :api
+
+    scope "/v1", V1, as: :v1 do
+      resources "/articles", ArticleController, only: [:index, :show]
+
+      # scope "/subscope", Subscope, as: :subscope do
+      # end
+    end
+  end  
+  
 end
