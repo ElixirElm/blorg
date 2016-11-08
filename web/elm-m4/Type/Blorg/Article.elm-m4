@@ -1,0 +1,40 @@
+--changequote(<!,!>)
+--include(<!elm-macros.elm-m4!>)
+module Type.Blorg.Article exposing(..)
+
+import Type.Blorg.AppRoute as AppRoute exposing(AppRoute)
+
+import Type.Blorg.Exts as BlorgExts
+IMPORT_JSON_DECODE
+
+type alias Article =
+  { id: Int
+  , title : String
+  , body : String
+  }
+
+type alias ArticleList = List Article
+
+toRoute : Article -> AppRoute
+toRoute article = (AppRoute.Article article.id)
+
+-- Decoding
+
+decodeArticle : Decoder Article
+decodeArticle =
+  decode Article
+    |> required "id" Decode.int
+    |> required "title" Decode.string
+    |> required "body" Decode.string
+
+decodeArticleData : Decoder Article
+decodeArticleData =
+  Decode.at ["data"] decodeArticle
+
+decodeArticleList : Decoder (List Article)
+decodeArticleList =
+  Decode.list decodeArticle
+
+decodeArticleListData : Decoder (List Article)
+decodeArticleListData =
+  Decode.at ["data"] decodeArticleList

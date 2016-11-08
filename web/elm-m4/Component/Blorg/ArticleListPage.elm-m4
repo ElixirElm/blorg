@@ -1,0 +1,112 @@
+-- TODO Show errors on a Shackbar.toast
+
+--changequote(<!,!>)
+--include(<!elm-macros.elm-m4!>)
+module Component.Blorg.ArticleListPage
+  exposing(Model, init, initialModel, Msg, Event(GoToArticle), update, view)
+
+
+import Type.Blorg.Article exposing(..)
+import Component.Blorg.ArticleListView as ArticleListView
+  exposing (Event(GoToArticle))
+  
+import Type.Blorg.Config as Config
+import Type.Blorg.Page as Page
+
+IMPORT_HTML
+IMPORT_MATERIAL
+import Http
+import Json.Decode as Json
+import Exts.RemoteData as RemoteData exposing(..)
+
+import Material.Spinner as Loading
+import Material.Progress as Loading
+
+import Type.Blorg.Exts exposing(..)
+import Type.Blorg.Event exposing(..)
+
+-- Sub Components
+
+define(<!SUB_ArticleListView!>,
+  <!<!ArticleListView!>, <!ArticleListView!>, <!articleListView!>!>)
+SUB_ON_DEMAND_GET_SET(SUB_ArticleListView)
+
+-- MODEL
+
+type alias Model =
+  { responseForArticleList : WebData ArticleList
+  , onDemand: OnDemand
+  , mdl : Material.Model
+  }
+
+init : (Model, Cmd Msg)
+init = (initialModel, loadArticleList)
+
+initialModel : Model
+initialModel = Model NotAsked NoData Material.model
+
+type OnDemand
+  = NoData
+  | ArticleListViewModel ArticleListView.Model
+
+-- ACTION, UPDATE
+
+type Msg
+  = ResponseForArticleList (WebData ArticleList)
+  | ArticleListView ArticleListView.Msg
+  | Mdl (Material.Msg Msg)
+
+type Event 
+  = GoToArticle Article
+
+update : Msg -> Model -> (Model, Cmd Msg, Maybe Event)
+update msg model =
+  case msg of
+    ResponseForArticleList responseForArticleList ->
+      case responseForArticleList of
+        Success articleList ->
+          ( { model
+            | onDemand = ArticleListViewModel <| ArticleListView.initialModel articleList
+            , responseForArticleList = responseForArticleList
+            }
+          , Cmd.none, Nothing )
+        _ -> (model, Cmd.none, Nothing)
+    SUB_UPDATE_MSG(SUB_ArticleListView)
+    Mdl msg' ->
+      withEvent <| Material.update msg' model
+
+SUB_UPDATE_WITH_EVENT(SUB_ArticleListView)
+updateOnEventFrom_ArticleListView :
+  ArticleListView.Event -> Model -> ( Model, Cmd Msg, Maybe Event )
+updateOnEventFrom_ArticleListView event model =
+  case event of
+    ArticleListView.GoToArticle article ->
+      (model, Cmd.none, Just (GoToArticle article))
+
+-- VIEW
+
+view : Model -> Html Msg
+view model =
+  Page.body ""
+    [ case model.responseForArticleList of
+        NotAsked -> viewSpinner
+        Loading -> viewSpinner
+        Failure err -> Page.body "Error" [text <| toString err]
+        Success article ->
+          SUB_VIEW(SUB_ArticleListView)
+    ]
+
+viewSpinner = Loading.spinner [ Loading.active True ]
+
+-- HTTP
+
+loadArticleList : Cmd Msg
+loadArticleList =
+  let
+    url
+      = Debug.log "Loading"
+      <| Config.apiHost ++ "/api/v1/articles/"
+  in
+    (Http.get decodeArticleListData url)
+      |> RemoteData.asCmd
+      |> Cmd.map ResponseForArticleList
