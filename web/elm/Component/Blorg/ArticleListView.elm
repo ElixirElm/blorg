@@ -80,21 +80,32 @@ type alias Mdl =
 
 view : Model -> Html Msg
 view model =
-  Lists.ul []
-    (List.map (viewItem model.mdl) model.articleList)
+  div [ ]
+  [ Lists.ul []
+      (List.indexedMap (viewItem model.mdl) model.articleList)
+  , Button.render Mdl [0 ] model.mdl
+    [ Button.fab
+    , Button.colored
+    , Button.disabled
+    , css "position" "absolute"
+    , css "bottom" "1em"
+    , css "right" "1em"
+    ]
+    [ Icon.i "add"]  
+  ]
     
-viewItem mdl item =
+viewItem mdl index item =
   Lists.li
   [ ]
   [ Lists.content 
 --     [ Options.attribute <| Html.Events.onClick (ClickArticle item) ] 
 --     [ text item.title ] 
     [  ] 
-    [ Button.render Mdl [0 ] mdl
+    [ Button.render Mdl [index, 1 ] mdl
       [ Button.onClick (ClickArticle item)
       ]
       [  text item.title ]
     ] 
   ]
   
-      
+        
