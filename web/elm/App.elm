@@ -12,7 +12,7 @@ import Component.Blorg.AppResource as AppResource
 
 -- Import Html
 import Html exposing (Html, text, p)
-import Html.App
+
 import Navigation
 import RouteUrl as Routing
 import String
@@ -96,7 +96,7 @@ view model =
                               case maybeSub of
                                 Nothing -> text ""
                                 Just sub ->
-                                  Html.App.map AppResource (AppResource.view sub)
+                                  Html.map AppResource (AppResource.view sub)
             )
 
 
@@ -123,7 +123,7 @@ location2messages location =
 
 -- APP
 
-main : Program Never
+main : Routing.RouteUrlProgram Never Model Msg
 main =
   Routing.program
   { delta2url = delta2url

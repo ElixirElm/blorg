@@ -8,8 +8,17 @@ import Date exposing(..)
 import Json.Decode as Decode exposing(Decoder)
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
 
+customDecoder decoder toResult =
+   Decode.andThen
+             (\a ->
+                   case toResult a of
+                      Ok b -> Decode.succeed b
+                      Err err -> Decode.fail err
+             )
+             decoder
+
 decodeDate =
-  Decode.customDecoder Decode.string Date.fromString
+  customDecoder Decode.string Date.fromString
 
 decodeNullOr decoder =
   Decode.oneOf

@@ -15,7 +15,7 @@ import Type.Blorg.Page as Page
 
 -- Import Html
 import Html exposing (Html, text, p)
-import Html.App
+
 import Exts.Html exposing(..)
 -- Import Material
 import Material
@@ -70,8 +70,8 @@ update msg model =
       in
         ( model, Cmd.none, Just (GoToArticle article))
     -- Boilerplate: Mdl action handler.
-    Mdl msg' ->
-      withEvent <| Material.update msg' model
+    Mdl msg_ ->
+      withEvent <| Material.update Mdl msg_ model
 
 -- VIEW
 
@@ -102,7 +102,7 @@ viewItem mdl index item =
 --     [ text item.title ] 
     [  ] 
     [ Button.render Mdl [index, 1 ] mdl
-      [ Button.onClick (ClickArticle item)
+      [ Options.onClick (ClickArticle item)
       ]
       [  text item.title ]
     ] 

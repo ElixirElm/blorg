@@ -2,7 +2,7 @@ divert(-1)
 
 define( <!APP_LOADER!>, <!--
 import Html
-import Html.App as App
+import Html as App
 import Material.Scheme
 
 main: Program Never
@@ -17,7 +17,7 @@ mainView model =
 
 define( <!IMPORT_HTML!>, <!-- Import Html
 import Html exposing (Html, text, p)
-import Html.App!>)
+!>)
 
 define( <!IMPORT_MATERIAL!>, <!-- Import Material
 import Material
@@ -134,7 +134,7 @@ define( <!SUB_VIEW!>, <!
                               case maybeSub of
                                 Nothing -> text ""
                                 Just sub ->
-                                  Html.App.map $1 ($2.view sub)
+                                  Html.map $1 ($2.view sub)
             )
 !>)
 

@@ -5,7 +5,7 @@ module Component.Blorg.NotFoundPage
 
 -- Import Html
 import Html exposing (Html, text, p)
-import Html.App
+
 -- Import Material
 import Material
 import Material.Button as Button

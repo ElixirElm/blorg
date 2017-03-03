@@ -24,7 +24,7 @@ import Type.Blorg.Page as Page
 
 -- Import Html
 import Html exposing (Html, text, p)
-import Html.App
+
 -- Import Material
 import Material
 import Material.Button as Button
@@ -130,7 +130,7 @@ update : Msg -> Model -> (Model, Cmd Msg, Maybe Event)
 update msg model =
   case msg of
     Mdl act ->
-      withEvent <| Material.update act model
+      withEvent <| Material.update Mdl act model
     
     NotFoundPage act ->
       update_NotFoundPage act model
@@ -310,7 +310,7 @@ viewRoute model =
                               case maybeSub of
                                 Nothing -> text ""
                                 Just sub ->
-                                  Html.App.map NotFoundPage (NotFoundPage.view sub)
+                                  Html.map NotFoundPage (NotFoundPage.view sub)
             )
 
     (AppRoute.Article _) ->
@@ -320,7 +320,7 @@ viewRoute model =
                               case maybeSub of
                                 Nothing -> text ""
                                 Just sub ->
-                                  Html.App.map ArticlePage (ArticlePage.view sub)
+                                  Html.map ArticlePage (ArticlePage.view sub)
             )
 
     AppRoute.ArticleList ->
@@ -330,7 +330,7 @@ viewRoute model =
                               case maybeSub of
                                 Nothing -> text ""
                                 Just sub ->
-                                  Html.App.map ArticleListPage (ArticleListPage.view sub)
+                                  Html.map ArticleListPage (ArticleListPage.view sub)
             )
 
 

@@ -15,7 +15,7 @@ import Type.Blorg.Page as Page
 
 -- Import Html
 import Html exposing (Html, text, p)
-import Html.App
+
 import Exts.Html exposing(..)
 -- Import Material
 import Material
@@ -60,8 +60,8 @@ update : Msg -> Model -> (Model, Cmd Msg, Maybe Event)
 update msg model =
   case msg of
     -- Boilerplate: Mdl action handler.
-    Mdl msg' ->
-      withEvent <| Material.update msg' model
+    Mdl msg_ ->
+      withEvent <| Material.update Mdl msg_ model
 
 -- VIEW
 

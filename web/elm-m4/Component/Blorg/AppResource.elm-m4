@@ -86,7 +86,7 @@ update : Msg -> Model -> (Model, Cmd Msg, Maybe Event)
 update msg model =
   case msg of
     Mdl act ->
-      withEvent <| Material.update act model
+      withEvent <| Material.update Mdl act model
     SUB_UPDATE_MSG(SUB_NotFoundPage)
     SUB_UPDATE_MSG(SUB_ArticlePage)
     SUB_UPDATE_MSG(SUB_ArticleListPage)

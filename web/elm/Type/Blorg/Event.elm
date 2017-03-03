@@ -5,13 +5,13 @@ withEvent (model, cmd) =
 
 withoutEvent update msg model =
   let
-    (model, cmd, _) = update msg model
+    (model1, cmd1, _) = update msg model
   in
-    (model, cmd)
+    (model1, cmd1)
 
 discardAndLogEvent update msg model =
   let
-    (model, cmd, event) = update msg model
-    _ = Debug.log "event" event
+    (model1, cmd1, event1) = update msg model
+    _ = Debug.log "event" event1
   in
-    (model, cmd)
+    (model1, cmd1)

@@ -6,8 +6,17 @@ module Type.Blorg.Exts exposing(..)
 import Date exposing(..)
 IMPORT_JSON_DECODE
 
+customDecoder decoder toResult =
+   Decode.andThen
+             (\a ->
+                   case toResult a of
+                      Ok b -> Decode.succeed b
+                      Err err -> Decode.fail err
+             )
+             decoder
+
 decodeDate =
-  Decode.customDecoder Decode.string Date.fromString
+  customDecoder Decode.string Date.fromString
 
 decodeNullOr decoder =
   Decode.oneOf

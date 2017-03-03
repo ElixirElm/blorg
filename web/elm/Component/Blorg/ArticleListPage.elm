@@ -15,7 +15,7 @@ import Type.Blorg.Page as Page
 
 -- Import Html
 import Html exposing (Html, text, p)
-import Html.App
+
 -- Import Material
 import Material
 import Material.Button as Button
@@ -28,7 +28,7 @@ import Material.Textfield as Textfield
 import Material.Typography as Typo
 import Http
 import Json.Decode as Json
-import Exts.RemoteData as RemoteData exposing(..)
+import RemoteData exposing(..)
 
 import Material.Spinner as Loading
 import Material.Progress as Loading
@@ -97,8 +97,8 @@ update msg model =
     ArticleListView act ->
       update_ArticleListView act model
     --
-    Mdl msg' ->
-      withEvent <| Material.update msg' model
+    Mdl msg_ ->
+      withEvent <| Material.update Mdl msg_ model
 
 -- Auto generated update_ArticleListView
 --   Expects: updateOnEventFrom_ArticleListView newEvent myModel
@@ -148,7 +148,7 @@ view model =
                               case maybeSub of
                                 Nothing -> text ""
                                 Just sub ->
-                                  Html.App.map ArticleListView (ArticleListView.view sub)
+                                  Html.map ArticleListView (ArticleListView.view sub)
             )
 
     ]
@@ -164,6 +164,6 @@ loadArticleList =
       = Debug.log "Loading"
       <| Config.apiHost ++ "/api/v1/articles/"
   in
-    (Http.get decodeArticleListData url)
-      |> RemoteData.asCmd
+    (Http.get url decodeArticleListData)
+      |> RemoteData.sendRequest
       |> Cmd.map ResponseForArticleList

@@ -81,7 +81,7 @@ location2messages location =
 
 -- APP
 
-main : Program Never
+main : Routing.RouteUrlProgram Never Model Msg
 main =
   Routing.program
   { delta2url = delta2url

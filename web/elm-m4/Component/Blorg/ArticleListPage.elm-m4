@@ -17,7 +17,7 @@ IMPORT_HTML
 IMPORT_MATERIAL
 import Http
 import Json.Decode as Json
-import Exts.RemoteData as RemoteData exposing(..)
+import RemoteData exposing(..)
 
 import Material.Spinner as Loading
 import Material.Progress as Loading
@@ -72,8 +72,8 @@ update msg model =
           , Cmd.none, Nothing )
         _ -> (model, Cmd.none, Nothing)
     SUB_UPDATE_MSG(SUB_ArticleListView)
-    Mdl msg' ->
-      withEvent <| Material.update msg' model
+    Mdl msg_ ->
+      withEvent <| Material.update Mdl msg_ model
 
 SUB_UPDATE_WITH_EVENT(SUB_ArticleListView)
 updateOnEventFrom_ArticleListView :
@@ -107,6 +107,6 @@ loadArticleList =
       = Debug.log "Loading"
       <| Config.apiHost ++ "/api/v1/articles/"
   in
-    (Http.get decodeArticleListData url)
-      |> RemoteData.asCmd
+    (Http.get url decodeArticleListData)
+      |> RemoteData.sendRequest
       |> Cmd.map ResponseForArticleList
