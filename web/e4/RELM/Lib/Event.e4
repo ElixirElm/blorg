@@ -1,4 +1,4 @@
-module Type.Blorg.Event exposing(..)
+module RELM.Lib.Event exposing(..)
 
 withEvent (model, cmd) =
   (model, cmd, Nothing)

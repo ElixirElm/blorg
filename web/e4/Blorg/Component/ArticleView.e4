@@ -1,0 +1,67 @@
+--changequote(<!,!>)
+--include(<!RelmMacros.e4!>)
+module Blorg.Component.ArticleView
+  exposing
+    ( State, init, initialState
+    , Action
+    , Event
+    , update, view)
+
+import Blorg.Schema.Article exposing(..)
+
+import RELM.Lib.DecoderExts exposing(..)
+import RELM.Lib.Event exposing(..)
+import Blorg.Layout.Page as Page
+
+IMPORT_HTML
+import Exts.Html exposing(..)
+IMPORT_MATERIAL
+import Material.Color as Color
+
+-- STATE
+
+type alias State =
+  { article : Article
+  , mdl : Material.Model
+      -- Boilerplate: model store for any and all Mdl components you use.
+  }
+
+init : Article -> (State, Cmd Action)
+init article =
+  ( initialState article
+  , Cmd.none
+  )
+
+initialState : Article -> State
+initialState article =
+    State article Material.model
+
+
+-- ACTION, UPDATE
+
+type Action
+  = Mdl (Material.Msg Action)
+    -- Boilerplate: Action clause for internal Mdl messages.
+
+type alias Event = ()
+
+update : Action -> State -> (State, Cmd Action, Maybe Event)
+update action state =
+  case action of
+    -- Boilerplate: Mdl action handler.
+    Mdl action_ ->
+      withEvent <| Material.update Mdl action_ state
+
+-- VIEW
+
+type alias Mdl =
+  Material.Model
+
+view : State -> Html Action
+view state =
+  div []
+  [ Page.title state.article.title
+  , styled p [  ]
+      [ text <| state.article.body ]
+  ]
+

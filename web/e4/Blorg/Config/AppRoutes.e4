@@ -1,6 +1,6 @@
-module Type.Blorg.AppRoute
+module Blorg.Config.AppRoutes
   exposing
-    ( AppRoute(NotInitialized, NotFound, Home, ArticleList,Article)
+    ( AppRoutes(NotInitialized, NotFound, Home, ArticleList,Article)
     , toRoute
     , toPath
     , doRedirects
@@ -10,7 +10,7 @@ import RouteParser exposing (..)
 
 -- Redirections
 
-doRedirects : AppRoute -> AppRoute
+doRedirects : AppRoutes -> AppRoutes
 doRedirects route =
   case route of
     Home -> ArticleList
@@ -21,7 +21,7 @@ doRedirects route =
 toRoute location =
   match matchers location
 
-type AppRoute
+type AppRoutes
   = NotInitialized
   | NotFound
   | Home
@@ -36,7 +36,7 @@ matchers =
   , dyn1 Article "/articles/" int ""
   ] 
 
-toPath : AppRoute -> String
+toPath : AppRoutes -> String
 toPath route =
   case route of
     NotInitialized -> "/404"

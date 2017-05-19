@@ -1,0 +1,33 @@
+--changequote(<!,!>)
+--include(<!RelmMacros.e4!>)
+module Blorg.Route.NotFoundRoute
+  exposing(State, init, initialState, Action, Event, update, view)
+
+IMPORT_HTML
+IMPORT_MATERIAL
+import Blorg.Layout.Page as Page
+
+-- STATE
+
+type alias State = ()
+
+init : (State, Cmd Action)
+init = (initialState, Cmd.none)
+
+initialState : State
+initialState = ()
+
+-- ACTION, UPDATE
+
+type alias Action = ()
+
+type alias Event = ()
+
+update : Action -> State -> (State, Cmd Action, Maybe Event)
+update action state =
+  (state, Cmd.none, Nothing)
+
+-- VIEW
+view : State -> Html Action
+view state =
+  Page.body "Not Found" []

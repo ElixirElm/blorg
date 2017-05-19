@@ -1,0 +1,156 @@
+--changequote(<!,!>)
+--include(<!RelmMacros.e4!>)
+module Blorg.Config.AppRouter
+  exposing
+    ( State, init, toRoute
+    , Action(GoTo), Event, update
+    , view)
+
+import Blorg.Route.NotFoundRoute as NotFoundRoute
+
+import Blorg.Route.ArticleRoute as ArticleRoute
+import Blorg.Route.ArticleListRoute as ArticleListRoute
+
+import Blorg.Schema.Article as Article
+
+import Blorg.Config.AppRoutes as AppRoutes
+  exposing
+    ( AppRoutes(NotInitialized, NotFound, Home, ArticleList,Article)
+    )
+
+import RELM.Lib.Event exposing(..)
+import Blorg.Config.App as Config
+import Blorg.Layout.Page as Page
+
+IMPORT_HTML
+IMPORT_MATERIAL
+-- 
+-- Sub Components
+
+define(<!RELM_NotFoundRoute!>,
+  <!<!NotFoundRoute!>, <!NotFoundRoute!>, <!NotFoundRoute!>!>)
+RELM_ON_DEMAND_GET_SET(RELM_NotFoundRoute)
+
+define(<!RELM_ArticleRoute!>,
+  <!<!ArticleRoute!>, <!ArticleRoute!>, <!ArticleRoute!>!>)
+RELM_ON_DEMAND_GET_SET(RELM_ArticleRoute)
+
+define(<!RELM_ArticleListRoute!>,
+  <!<!ArticleListRoute!>, <!ArticleListRoute!>, <!ArticleListRoute!>!>)
+RELM_ON_DEMAND_GET_SET(RELM_ArticleListRoute)
+
+-- STATE
+
+type alias State
+  = { route : AppRoutes
+    , onDemand: OnDemand
+    , mdl : Material.Model
+      -- Boilerplate: model store for any and all Mdl components you use.
+    }
+
+type OnDemand
+  = NoRoute
+  | NotFoundRouteState NotFoundRoute.State
+  | ArticleRouteState ArticleRoute.State
+  | ArticleListRouteState ArticleListRoute.State
+
+init : (State, Cmd Action)
+init =
+  let
+    (notFoundRoute, notFoundCmd) = NotFoundRoute.init
+  in
+    ( { route = AppRoutes.NotInitialized
+      , onDemand = NoRoute
+      , mdl = Material.model
+      }
+    , Cmd.none
+    )
+
+toRoute : State -> AppRoutes
+toRoute state =
+  state.route
+-- ACTION, UPDATE
+
+type Action
+  = Mdl (Material.Msg Action)
+  -- Boilerplate: Action clause for internal Mdl messages.
+  | GoTo AppRoutes
+  | NotFoundRoute NotFoundRoute.Action
+  | ArticleRoute ArticleRoute.Action
+  | ArticleListRoute ArticleListRoute.Action
+
+type alias Event
+  = ()
+
+update : Action -> State -> (State, Cmd Action, Maybe Event)
+update action state =
+  case action of
+    Mdl act ->
+      withEvent <| Material.update Mdl act state
+    RELM_UPDATE_ACTION(RELM_NotFoundRoute)
+    RELM_UPDATE_ACTION(RELM_ArticleRoute)
+    RELM_UPDATE_ACTION(RELM_ArticleListRoute)
+    GoTo route ->
+      gotoRoute route state
+
+gotoRoute : AppRoutes -> State -> (State, Cmd Action, Maybe Event)
+gotoRoute route state =
+  let
+    _ = Debug.log "gotoRoute " <| toString route
+  in
+    case route of
+      AppRoutes.NotInitialized -> (state, Cmd.none, Nothing)
+      AppRoutes.Home -> (state, Cmd.none, Nothing) -- Redirected. Never comes
+      AppRoutes.NotFound ->
+        RELM_ASSIGN_ON_DEMAND(RELM_NotFoundRoute, route)
+      AppRoutes.Article id ->
+        RELM_ASSIGN_ON_DEMAND(RELM_ArticleRoute, route, id)
+      AppRoutes.ArticleList ->
+        RELM_ASSIGN_ON_DEMAND(RELM_ArticleListRoute, route)
+--       _ ->
+--         let
+--             _ = Debug.log "AppRouter unknown route " route
+--         in
+--           (state, Cmd.none, Nothing)
+
+RELM_UPDATE_WITH_EVENT(RELM_NotFoundRoute)
+updateOnEventFrom_NotFoundRoute :
+  NotFoundRoute.Event -> State -> ( State, Cmd Action, Maybe Event )
+updateOnEventFrom_NotFoundRoute event state =
+  (state, Cmd.none, Nothing)
+
+RELM_UPDATE_WITH_EVENT(RELM_ArticleRoute)
+updateOnEventFrom_ArticleRoute :
+  ArticleRoute.Event -> State -> ( State, Cmd Action, Maybe Event )
+updateOnEventFrom_ArticleRoute event state =
+  (state, Cmd.none, Nothing)
+RELM_UPDATE_WITH_EVENT(RELM_ArticleListRoute)
+updateOnEventFrom_ArticleListRoute :
+  ArticleListRoute.Event -> State -> ( State, Cmd Action, Maybe Event )
+updateOnEventFrom_ArticleListRoute event state =
+  case event of
+    ArticleListRoute.GoToArticle article ->
+      gotoRoute (Article.toRoute article) state
+
+-- VIEW
+
+view : State -> Html Action
+view state =
+  Page.layout Mdl state.mdl [ viewRoute state ]
+
+viewRoute : State -> Html Action
+viewRoute state =
+  case state.route of
+    AppRoutes.NotInitialized ->
+      text "NotInitialized"
+    AppRoutes.Home ->
+      text "Why Home?"
+    AppRoutes.NotFound ->
+      RELM_VIEW(RELM_NotFoundRoute)
+    (AppRoutes.Article _) ->
+      RELM_VIEW(RELM_ArticleRoute)
+    AppRoutes.ArticleList ->
+      RELM_VIEW(RELM_ArticleListRoute)
+
+--     _ ->
+--       text <| "Unhandled Route" ++ toString state.route

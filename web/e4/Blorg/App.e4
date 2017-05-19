@@ -1,0 +1,93 @@
+--changequote(<!,!>)
+--include(<!RelmMacros.e4!>)
+import RELM.Lib.Event exposing(..)
+
+import Blorg.Config.AppRoutes as AppRoutes
+  exposing
+    ( AppRoutes(NotInitialized, NotFound, Home)
+    )
+
+import Blorg.Config.AppRouter as AppRouter
+  exposing (Action(GoTo))
+
+IMPORT_HTML
+import Navigation
+import RouteUrl as Routing
+import String
+
+-- Sub Components
+
+define(<!RELM_AppRouter!>,
+  <!<!AppRouter!>, <!AppRouter!>, <!appRouter!>!>)
+RELM_DEF_GET_SET(RELM_AppRouter)
+
+-- MODEL
+
+type alias State =
+  { appRouter : AppRouter.State }
+
+init : (State, Cmd Action)
+init =
+  let
+    (res, resCmd) = AppRouter.init
+  in
+    ( State res, Cmd.map AppRouter resCmd  )
+
+-- ACTION, UPDATE
+
+type Action
+  = AppRouter AppRouter.Action
+
+type alias Event
+  = ()
+
+update : Action -> State -> (State, Cmd Action, Maybe Event)
+update msg state =
+  case msg of
+    RELM_UPDATE_ACTION(RELM_AppRouter)
+
+RELM_UPDATE_WITH_EVENT(RELM_AppRouter)
+updateOnEventFrom_AppRouter
+  : AppRouter.Event -> State -> ( State, Cmd Action, Maybe Event )
+updateOnEventFrom_AppRouter event state =
+  (state, Cmd.none, Nothing)
+
+-- VIEW
+
+view : State -> Html Action
+view state =
+  RELM_VIEW(RELM_AppRouter)
+
+-- ROUTING
+
+delta2url : State -> State -> Maybe Routing.UrlChange
+delta2url state1 state2 =
+  if AppRouter.toRoute(state1.appRouter) /= AppRouter.toRoute(state2.appRouter) then
+    { entry = Routing.NewEntry
+    , url = "#" ++ (AppRoutes.toPath <| AppRouter.toRoute state2.appRouter)
+    } |> Just
+  else
+    Nothing
+
+location2messages : Navigation.Location -> List Action
+location2messages location =
+  let
+    maybeRoute = AppRoutes.toRoute <| String.dropLeft 1 location.hash
+--     _ = Debug.log "maybeRoute " maybeRoute
+  in
+    case maybeRoute of
+      Nothing -> [ AppRouter <| GoTo NotFound]
+      Just route -> [ AppRouter <| GoTo <| AppRoutes.doRedirects route ]
+
+-- APP
+
+main : Routing.RouteUrlProgram Never State Action
+main =
+  Routing.program
+  { delta2url = delta2url
+  , location2messages = location2messages
+  , init = init
+  , view = view
+  , subscriptions = always Sub.none
+  , update = withoutEvent update
+  }

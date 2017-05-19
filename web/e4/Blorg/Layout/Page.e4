@@ -1,8 +1,8 @@
 --changequote(<!,!>)
---include(<!elm-macros.elm-m4!>)
-module Type.Blorg.Page exposing(..)
+--include(<!RelmMacros.e4!>)
+module Blorg.Layout.Page exposing(..)
 
-import Type.Blorg.Config as Config
+import Blorg.Config.App as Config
 
 import Material.Color as Color
 import Material.Layout as Layout
@@ -21,7 +21,7 @@ boxed =
   , css "padding-right" "8%"
   ]
 
-layout mdlMsg mdl main  =
+layout mdlAction mdl main  =
   let
     header =
       [ Layout.row [ Color.text Color.white]
@@ -30,7 +30,7 @@ layout mdlMsg mdl main  =
       ]
   in
     scheme <|
-      Layout.render mdlMsg mdl
+      Layout.render mdlAction mdl
         [ Layout.fixedHeader
         , Layout.waterfall True
         ]

@@ -1,6 +1,6 @@
 --changequote(<!,!>)
---include(<!elm-macros.elm-m4!>)
-module Type.Blorg.Exts exposing(..)
+--include(<!RelmMacros.e4!>)
+module RELM.Lib.DecoderExts exposing(..)
 -- Probably reusable extentions out side the project
 
 import Date exposing(..)

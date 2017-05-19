@@ -1,17 +1,17 @@
 --changequote(<!,!>)
---include(<!elm-macros.elm-m4!>)
-module Component.Blorg.ArticleListView
+--include(<!RelmMacros.e4!>)
+module Blorg.Component.ArticleListView
   exposing
-    ( Model, init, initialModel
-    , Msg
+    ( State, init, initialState
+    , Action
     , Event(GoToArticle)
     , update, view)
 
-import Type.Blorg.Article exposing(..)
+import Blorg.Schema.Article exposing(..)
 
-import Type.Blorg.Exts exposing(..)
-import Type.Blorg.Event exposing(..)
-import Type.Blorg.Page as Page
+import RELM.Lib.DecoderExts exposing(..)
+import RELM.Lib.Event exposing(..)
+import Blorg.Layout.Page as Page
 
 IMPORT_HTML
 import Exts.Html exposing(..)
@@ -21,58 +21,58 @@ import Material.Color as Color
 import Html.Events
 import String
 
--- MODEL
+-- STATE
 
-type alias Model =
+type alias State =
   { articleList : ArticleList
   , mdl : Material.Model
       -- Boilerplate: model store for any and all Mdl components you use.
   }
 
-init : ArticleList -> (Model, Cmd Msg)
+init : ArticleList -> (State, Cmd Action)
 init articleList =
-  ( initialModel articleList
+  ( initialState articleList
   , Cmd.none
   )
 
-initialModel : ArticleList -> Model
-initialModel articleList =
-    Model articleList Material.model
+initialState : ArticleList -> State
+initialState articleList =
+    State articleList Material.model
 
 
 -- ACTION, UPDATE
 
-type Msg
+type Action
   = ClickArticle Article
-    | Mdl (Material.Msg Msg)
-    -- Boilerplate: Msg clause for internal Mdl messages.
+    | Mdl (Material.Msg Action)
+    -- Boilerplate: Action clause for internal Mdl messages.
 
 type Event 
   = GoToArticle Article
 
-update : Msg -> Model -> (Model, Cmd Msg, Maybe Event)
-update msg model =
-  case msg of
+update : Action -> State -> (State, Cmd Action, Maybe Event)
+update action state =
+  case action of
     ClickArticle article ->
       let
         _ = Debug.log "ClickArticle" article
       in
-        ( model, Cmd.none, Just (GoToArticle article))
+        ( state, Cmd.none, Just (GoToArticle article))
     -- Boilerplate: Mdl action handler.
-    Mdl msg_ ->
-      withEvent <| Material.update Mdl msg_ model
+    Mdl action_ ->
+      withEvent <| Material.update Mdl action_ state
 
 -- VIEW
 
 type alias Mdl =
   Material.Model
 
-view : Model -> Html Msg
-view model =
+view : State -> Html Action
+view state =
   div [ ]
   [ Lists.ul []
-      (List.indexedMap (viewItem model.mdl) model.articleList)
-  , Button.render Mdl [MDL_IDX] model.mdl
+      (List.indexedMap (viewItem state.mdl) state.articleList)
+  , Button.render Mdl [MDL_IDX] state.mdl
     [ Button.fab
     , Button.colored
     , Button.disabled

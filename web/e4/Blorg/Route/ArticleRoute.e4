@@ -1,0 +1,108 @@
+-- TODO Show errors on a Shackbar.toast
+
+--changequote(<!,!>)
+--include(<!RelmMacros.e4!>)
+module Blorg.Route.ArticleRoute
+  exposing(State, init, initialState, Action, Event, update, view)
+
+
+import Blorg.Schema.Article exposing(..)
+import Blorg.Component.ArticleView as ArticleView
+
+import Blorg.Config.App as Config
+import Blorg.Layout.Page as Page
+
+IMPORT_HTML
+IMPORT_MATERIAL
+import Http
+import Json.Decode as Json
+import RemoteData exposing(..)
+
+import Material.Spinner as Loading
+import Material.Progress as Loading
+
+import RELM.Lib.DecoderExts exposing(..)
+import RELM.Lib.Event exposing(..)
+
+-- Sub Components
+
+define(<!RELM_ArticleView!>,
+  <!<!ArticleView!>, <!ArticleView!>, <!articleView!>!>)
+RELM_ON_DEMAND_GET_SET(RELM_ArticleView)
+
+-- STATE
+
+type alias State =
+  { responseForArticle : WebData Article
+  , onDemand: OnDemand
+  , mdl : Material.Model
+  }
+
+init : Int -> (State, Cmd Action)
+init id = (initialState, loadArticle id)
+
+initialState : State
+initialState = State NotAsked NoData Material.model
+
+type OnDemand
+  = NoData
+  | ArticleViewState ArticleView.State
+
+-- ACTION, UPDATE
+
+type Action
+  = ResponseForArticle (WebData Article)
+  | ArticleView ArticleView.Action
+  | Mdl (Material.Msg Action)
+
+type alias Event = ()
+
+update : Action -> State -> (State, Cmd Action, Maybe Event)
+update action state =
+  case action of
+    ResponseForArticle responseForArticle ->
+      case responseForArticle of
+        Success article ->
+          ( { state
+            | onDemand = ArticleViewState <| ArticleView.initialState article
+            , responseForArticle = responseForArticle
+            }
+          , Cmd.none, Nothing )
+        _ -> (state, Cmd.none, Nothing)
+    RELM_UPDATE_ACTION(RELM_ArticleView)
+    Mdl action_ ->
+      withEvent <| Material.update Mdl action_ state
+
+RELM_UPDATE_WITH_EVENT(RELM_ArticleView)
+updateOnEventFrom_ArticleView :
+  ArticleView.Event -> State -> ( State, Cmd Action, Maybe Event )
+updateOnEventFrom_ArticleView event state =
+  (state, Cmd.none, Nothing)
+
+-- VIEW
+
+view : State -> Html Action
+view state =
+  Page.body ""
+    [ case state.responseForArticle of
+        NotAsked -> viewSpinner
+        Loading -> viewSpinner
+        Failure err -> Page.body "Error" [text <| toString err]
+        Success article ->
+          RELM_VIEW(RELM_ArticleView)
+    ]
+
+viewSpinner = Loading.spinner [ Loading.active True ]
+
+-- HTTP
+
+loadArticle : Int -> Cmd Action
+loadArticle id =
+  let
+    url
+      = Debug.log "Loading"
+      <| Config.apiHost ++ "/api/v1/articles/" ++ (toString id)
+  in
+    (Http.get url decodeArticleData)
+      |> RemoteData.sendRequest
+      |> Cmd.map ResponseForArticle

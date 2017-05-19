@@ -1,10 +1,10 @@
 --changequote(<!,!>)
---include(<!elm-macros.elm-m4!>)
-module Type.Blorg.Article exposing(..)
+--include(<!RelmMacros.e4!>)
+module Blorg.Schema.Article exposing(..)
 
-import Type.Blorg.AppRoute as AppRoute exposing(AppRoute)
+import Blorg.Config.AppRoutes as AppRoutes exposing(AppRoutes)
 
-import Type.Blorg.Exts as BlorgExts
+import RELM.Lib.DecoderExts as BlorgExts
 IMPORT_JSON_DECODE
 
 type alias Article =
@@ -15,8 +15,8 @@ type alias Article =
 
 type alias ArticleList = List Article
 
-toRoute : Article -> AppRoute
-toRoute article = (AppRoute.Article article.id)
+toRoute : Article -> AppRoutes
+toRoute article = (AppRoutes.Article article.id)
 
 -- Decoding
 

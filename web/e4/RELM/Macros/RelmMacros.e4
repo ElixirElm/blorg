@@ -1,0 +1,146 @@
+divert(-1)
+
+define( <!APP_LOADER!>, <!--
+import Html
+import Html as App
+import Material.Scheme
+
+main: Program Never
+main =
+  App.program
+    $1
+
+mainView : State -> Html.Html Action
+mainView state =
+  view state
+  |> Material.Scheme.top!>)
+
+define( <!IMPORT_HTML!>, <!-- Import Html
+import Html exposing (Html, text, p)
+!>)
+
+define( <!IMPORT_MATERIAL!>, <!-- Import Material
+import Material
+import Material.Button as Button
+import Material.Grid exposing (grid, cell, size, Device(..), noSpacing)
+import Material.Icon as Icon
+import Material.List as Lists
+import Material.Options as Options exposing (css, styled, div, span, img)
+import Material.Table as Table
+import Material.Textfield as Textfield
+import Material.Typography as Typo!>)
+
+define( <!IMPORT_JSON_DECODE!>, <!-- Import Json Decode
+import Json.Decode as Decode exposing(Decoder)
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)!>)
+
+-- RELM_UPDATE_ACTION action
+define( <!RELM_UPDATE_ACTION!>, <!
+    $1 act ->
+      update_$1 act state!>
+    --)
+
+-- RELM_UPDATE_ACTION_WITHOUT_EVENT action
+define( <!RELM_UPDATE_ACTION_ADDING_EVENT!>, <!
+    $1 act ->
+      withEvent <| update_$1 act state!>
+    --)
+
+-- RELM_DEF_GET_SET action, module, state.field
+define( <!RELM_DEF_GET_SET_DECLARE!>, <!-- Auto generated declaration
+get_$1 : State -> Maybe $2.State
+set_$1 : $2.State -> State -> State
+!>)
+
+define( <!RELM_DEF_GET_SET!>, <!-- Auto generated get/set_$1
+get_$1 : State -> Maybe $2.State
+get_$1 state = Just state.$3
+
+set_$1 : $2.State -> State -> State
+set_$1 value state = { state | $3 = value }
+!>)
+
+define(<!RELM_ON_DEMAND_GET_SET!>, <!-- Auto generated get/set_$1
+get_$1 : State -> Maybe $2.State
+get_$1 state =
+  case state.onDemand of
+    $1State mdl -> Just mdl
+    _ -> Nothing
+set_$1 : $2.State -> State -> State
+set_$1 value state =
+  case state.onDemand of
+    $1State mdl ->
+      { state | onDemand = $1State value }
+    _ -> state
+!>)
+
+define(<!RELM_ASSIGN_ON_DEMAND!>, <!
+          let
+            (subState, subCmd) = $2.init $5
+          in
+            ( {state
+              | onDemand = $1State subState
+              , route = $4
+              }
+            , Cmd.map $1 subCmd
+            , Nothing
+            )
+!>)
+
+define( <!RELM_DEF_FOCUS!>, <!
+Depreciated RELM_ DEF_ FOCUS
+!>)
+
+-- RELM_UPDATE_DEF action, module, state.field
+define( <!RELM_UPDATE_WITHOUT_EVENT!>, <!-- Auto generated update_$1
+update_$1 : $2.Action -> State -> ( State, Cmd Action )
+update_$1 act state =
+  let
+    (newValue, newCmd) = $2.update act (get_$1 state)
+  in
+    (state |> set_$1 newValue, Cmd.map $1 newCmd)!>)
+
+-- RELM_UPDATE_EVENT_DEF action, module, state.field
+define( <!RELM_UPDATE_WITH_EVENT!>, <!-- Auto generated update_$1
+--   Expects: updateOnEventFrom_$1 newEvent myState
+update_$1 : $2.Action -> State -> ( State, Cmd Action, Maybe Event )
+update_$1 act state =
+  let
+    maybeOldValue = (get_$1 state)
+    (myState, myCmd, maybeNewEvent) = case maybeOldValue of
+      Nothing ->
+        (state, Cmd.none, Nothing)
+      Just oldValue ->
+        let
+          (newValue, newCmd, wantedEvent)
+            = $2.update act oldValue
+        in
+          ( state |> set_$1 newValue, Cmd.map $1 newCmd, wantedEvent)
+  in
+    case maybeNewEvent of
+      Nothing ->
+        (myState, myCmd, Nothing)
+      Just newEvent ->
+        let
+          (afterState, afterCmd, afterEvent)
+            = updateOnEventFrom_$1 newEvent myState
+        in
+          (afterState, Cmd.batch [myCmd, afterCmd], afterEvent)!>)
+
+-- RELM_VIEW action, module, field
+define( <!RELM_VIEW!>, <!
+            ( let maybeSub = get_$1 state
+              in
+                              case maybeSub of
+                                Nothing -> text ""
+                                Just sub ->
+                                  Html.map $1 ($2.view sub)
+            )
+!>)
+
+
+define( <!MDL_COUNTER!>, 0)
+define( <!MDL_IDX!>,
+  <!MDL_COUNTER define( <!MDL_COUNTER!>, incr(MDL_COUNTER))!>)
+
+divert(0)dnl

@@ -1,5 +1,5 @@
  
-module Type.Blorg.Config exposing(..)
+module Blorg.Config.App exposing(..)
 
 forReactor : Bool
 forReactor = False
