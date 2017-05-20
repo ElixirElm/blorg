@@ -11,10 +11,14 @@ E4_SRC = $(shell find $(SOURCE_E4_DIR) -type f -name '*.e4')
 M4_DEFS = $(shell find $(RELM_MACROS_DIR) -type f -name '*.e4')
 ELM_TARGETS=$(E4_SRC:$(SOURCE_E4_DIR)%.e4=$(TARGET_ELM_DIR)%.elm)
 
-$(OUTPUT_DIR)%.js: $(ELM_TARGETS)
+ELM_SRC = $(shell find $(SOURCE_E4_DIR) -type f -name '*.elm')
+ELM_TARGETS2=$(ELM_SRC:$(SOURCE_E4_DIR)%.elm=$(TARGET_ELM_DIR)%.elm)
+
+$(OUTPUT_DIR)%.js: $(ELM_TARGETS) $(ELM_TARGETS2)
+	mkdir -p $(dir $(OUTPUT_DIR)$*.js)
 	cd $(TARGET_ELM_DIR) && elm make $(ELM_MAKE_FLAGS)$*.elm --output $(OUTPUT_DIR)$*.js
 
-elm: $(ELM_TARGETS)
+elm: $(ELM_TARGETS) $(ELM_TARGETS2)
 
 .SUFFIXES: .e4 .elm      # Add .h.in and .h as suffixes
 
