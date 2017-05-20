@@ -1,4 +1,4 @@
- 
+-- @author Umur Ozkul umur.ozkul@gmail.com
 module Blorg.Config.App exposing(..)
 
 forReactor : Bool
