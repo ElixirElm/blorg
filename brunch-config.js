@@ -69,5 +69,10 @@ exports.config = {
 
   npm: {
     enabled: true
+  },
+
+  watcher: {
+    awaitWriteFinish: true,
+    usePolling: true
   }
 };
