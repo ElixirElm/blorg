@@ -2,7 +2,7 @@ divert(-1)
 include(RelmImportHelperMacros.e4)
 
 -- Quckly try elm components in Reactor
-define( <!APP_LOADER!>, <!--
+define( <!HTML_PROGRAM!>, <!--
 
 import Html
 import Html as App
