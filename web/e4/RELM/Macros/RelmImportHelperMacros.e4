@@ -1,0 +1,20 @@
+define( <!IMPORT_HTML!>, <!-- Import Html
+import Html exposing (Html, text, p)
+!>)
+
+define( <!IMPORT_MATERIAL!>, <!-- Import Material
+import Material
+import Material.Button as Button
+import Material.Grid exposing (grid, cell, size, Device(..), noSpacing)
+import Material.Icon as Icon
+import Material.List as Lists
+import Material.Options as Options exposing (css, styled, div, span, img)
+import Material.Table as Table
+import Material.Textfield as Textfield
+import Material.Typography as Typo!>)
+
+define( <!IMPORT_JSON_DECODE!>, <!-- Import Json Decode
+import Json.Decode as Decode exposing(Decoder)
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)!>)
+
+

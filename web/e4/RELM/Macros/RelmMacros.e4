@@ -1,6 +1,9 @@
 divert(-1)
+include(RelmImportHelperMacros.e4)
 
+-- Quckly try elm components in Reactor
 define( <!APP_LOADER!>, <!--
+
 import Html
 import Html as App
 import Material.Scheme
@@ -15,44 +18,37 @@ mainView state =
   view state
   |> Material.Scheme.top!>)
 
-define( <!IMPORT_HTML!>, <!-- Import Html
-import Html exposing (Html, text, p)
-!>)
-
-define( <!IMPORT_MATERIAL!>, <!-- Import Material
-import Material
-import Material.Button as Button
-import Material.Grid exposing (grid, cell, size, Device(..), noSpacing)
-import Material.Icon as Icon
-import Material.List as Lists
-import Material.Options as Options exposing (css, styled, div, span, img)
-import Material.Table as Table
-import Material.Textfield as Textfield
-import Material.Typography as Typo!>)
-
-define( <!IMPORT_JSON_DECODE!>, <!-- Import Json Decode
-import Json.Decode as Decode exposing(Decoder)
-import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)!>)
-
 -- RELM_UPDATE_ACTION action
 define( <!RELM_UPDATE_ACTION!>, <!
+define(<!ARG_ACTION!>, $1)dnl
+define(<!ARG_MODULE!>, $2)dnl
+define(<!ARG_FIELD!>, $3)dnl
     $1 act ->
       update_$1 act state!>
     --)
 
 -- RELM_UPDATE_ACTION_WITHOUT_EVENT action
 define( <!RELM_UPDATE_ACTION_ADDING_EVENT!>, <!
+define(<!ARG_ACTION!>, $1)dnl
+define(<!ARG_MODULE!>, $2)dnl
+define(<!ARG_FIELD!>, $3)dnl
     $1 act ->
       withEvent <| update_$1 act state!>
     --)
 
 -- RELM_DEF_GET_SET action, module, state.field
 define( <!RELM_DEF_GET_SET_DECLARE!>, <!-- Auto generated declaration
+define(<!ARG_ACTION!>, $1)dnl
+define(<!ARG_MODULE!>, $2)dnl
+define(<!ARG_FIELD!>, $3)dnl
 get_$1 : State -> Maybe $2.State
 set_$1 : $2.State -> State -> State
 !>)
 
 define( <!RELM_DEF_GET_SET!>, <!-- Auto generated get/set_$1
+define(<!ARG_ACTION!>, $1)dnl
+define(<!ARG_MODULE!>, $2)dnl
+define(<!ARG_FIELD!>, $3)dnl
 get_$1 : State -> Maybe $2.State
 get_$1 state = Just state.$3
 
@@ -61,6 +57,9 @@ set_$1 value state = { state | $3 = value }
 !>)
 
 define(<!RELM_ON_DEMAND_GET_SET!>, <!-- Auto generated get/set_$1
+define(<!ARG_ACTION!>, $1)dnl
+define(<!ARG_MODULE!>, $2)dnl
+define(<!ARG_FIELD!>, $3)dnl
 get_$1 : State -> Maybe $2.State
 get_$1 state =
   case state.onDemand of
@@ -75,6 +74,9 @@ set_$1 value state =
 !>)
 
 define(<!RELM_ASSIGN_ON_DEMAND!>, <!
+define(<!ARG_ACTION!>, $1)dnl
+define(<!ARG_MODULE!>, $2)dnl
+define(<!ARG_FIELD!>, $3)dnl
           let
             (subState, subCmd) = $2.init $5
           in
@@ -93,6 +95,9 @@ Depreciated RELM_ DEF_ FOCUS
 
 -- RELM_UPDATE_DEF action, module, state.field
 define( <!RELM_UPDATE_WITHOUT_EVENT!>, <!-- Auto generated update_$1
+define(<!ARG_ACTION!>, $1)dnl
+define(<!ARG_MODULE!>, $2)dnl
+define(<!ARG_FIELD!>, $3)dnl
 update_$1 : $2.Action -> State -> ( State, Cmd Action )
 update_$1 act state =
   let
@@ -103,6 +108,9 @@ update_$1 act state =
 -- RELM_UPDATE_EVENT_DEF action, module, state.field
 define( <!RELM_UPDATE_WITH_EVENT!>, <!-- Auto generated update_$1
 --   Expects: updateOnEventFrom_$1 newEvent myState
+define(<!ARG_ACTION!>, $1)dnl
+define(<!ARG_MODULE!>, $2)dnl
+define(<!ARG_FIELD!>, $3)dnl
 update_$1 : $2.Action -> State -> ( State, Cmd Action, Maybe Event )
 update_$1 act state =
   let
@@ -129,6 +137,9 @@ update_$1 act state =
 
 -- RELM_VIEW action, module, field
 define( <!RELM_VIEW!>, <!
+define(<!ARG_ACTION!>, $1)dnl
+define(<!ARG_MODULE!>, $2)dnl
+define(<!ARG_FIELD!>, $3)dnl
             ( let maybeSub = get_$1 state
               in
                               case maybeSub of
