@@ -29,7 +29,7 @@ import RELM.Lib.Event exposing(..)
 
 define(<!RELM_ArticleView!>,
   <!<!ArticleView!>, <!ArticleView!>, <!articleView!>!>)
-RELM_ON_DEMAND_GET_SET(RELM_ArticleView)
+RELM_ON_DEMAND_GET_SET(state,RELM_ArticleView)
 
 -- STATE
 
@@ -70,11 +70,11 @@ update action state =
             }
           , Cmd.none, Nothing )
         _ -> (state, Cmd.none, Nothing)
-    RELM_UPDATE_ACTION(RELM_ArticleView)
+    RELM_UPDATE_ACTION(state,RELM_ArticleView)
     Mdl action_ ->
       withEvent <| Material.update Mdl action_ state
 
-RELM_UPDATE_WITH_EVENT(RELM_ArticleView)
+RELM_UPDATE_WITH_EVENT(state,RELM_ArticleView)
 updateOnEventFrom_ArticleView :
   ArticleView.Event -> State -> ( State, Cmd Action, Maybe Event )
 updateOnEventFrom_ArticleView event state =
@@ -90,7 +90,7 @@ view state =
         Loading -> viewSpinner
         Failure err -> Page.body "Error" [text <| toString err]
         Success article ->
-          RELM_VIEW(RELM_ArticleView)
+          RELM_VIEW(state,RELM_ArticleView)
     ]
 
 viewSpinner = Loading.spinner [ Loading.active True ]

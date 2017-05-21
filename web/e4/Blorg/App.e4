@@ -20,7 +20,7 @@ import String
 
 define(<!RELM_AppRouter!>,
   <!<!AppRouter!>, <!AppRouter!>, <!appRouter!>!>)
-RELM_DEF_GET_SET(RELM_AppRouter)
+RELM_DEF_GET_SET(state,RELM_AppRouter)
 
 -- MODEL
 
@@ -45,9 +45,9 @@ type alias Event
 update : Action -> State -> (State, Cmd Action, Maybe Event)
 update msg state =
   case msg of
-    RELM_UPDATE_ACTION(RELM_AppRouter)
+    RELM_UPDATE_ACTION(state,RELM_AppRouter)
 
-RELM_UPDATE_WITH_EVENT(RELM_AppRouter)
+RELM_UPDATE_WITH_EVENT(state,RELM_AppRouter)
 updateOnEventFrom_AppRouter
   : AppRouter.Event -> State -> ( State, Cmd Action, Maybe Event )
 updateOnEventFrom_AppRouter event state =
@@ -57,7 +57,7 @@ updateOnEventFrom_AppRouter event state =
 
 view : State -> Html Action
 view state =
-  RELM_VIEW(RELM_AppRouter)
+  RELM_VIEW(state,RELM_AppRouter)
 
 -- ROUTING
 

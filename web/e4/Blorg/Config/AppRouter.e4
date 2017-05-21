@@ -30,15 +30,15 @@ IMPORT_MATERIAL
 
 define(<!RELM_NotFoundRoute!>,
   <!<!NotFoundRoute!>, <!NotFoundRoute!>, <!NotFoundRoute!>!>)
-RELM_ON_DEMAND_GET_SET(RELM_NotFoundRoute)
+RELM_ON_DEMAND_GET_SET(state,RELM_NotFoundRoute)
 
 define(<!RELM_ArticleRoute!>,
   <!<!ArticleRoute!>, <!ArticleRoute!>, <!ArticleRoute!>!>)
-RELM_ON_DEMAND_GET_SET(RELM_ArticleRoute)
+RELM_ON_DEMAND_GET_SET(state,RELM_ArticleRoute)
 
 define(<!RELM_ArticleListRoute!>,
   <!<!ArticleListRoute!>, <!ArticleListRoute!>, <!ArticleListRoute!>!>)
-RELM_ON_DEMAND_GET_SET(RELM_ArticleListRoute)
+RELM_ON_DEMAND_GET_SET(state,RELM_ArticleListRoute)
 
 -- STATE
 
@@ -88,9 +88,9 @@ update action state =
   case action of
     Mdl act ->
       withEvent <| Material.update Mdl act state
-    RELM_UPDATE_ACTION(RELM_NotFoundRoute)
-    RELM_UPDATE_ACTION(RELM_ArticleRoute)
-    RELM_UPDATE_ACTION(RELM_ArticleListRoute)
+    RELM_UPDATE_ACTION(state,RELM_NotFoundRoute)
+    RELM_UPDATE_ACTION(state,RELM_ArticleRoute)
+    RELM_UPDATE_ACTION(state,RELM_ArticleListRoute)
     GoTo route ->
       gotoRoute route state
 
@@ -103,29 +103,29 @@ gotoRoute route state =
       AppRoutes.NotInitialized -> (state, Cmd.none, Nothing)
       AppRoutes.Home -> (state, Cmd.none, Nothing) -- Redirected. Never comes
       AppRoutes.NotFound ->
-        RELM_ASSIGN_ON_DEMAND(RELM_NotFoundRoute, route)
+        RELM_ASSIGN_ON_DEMAND(state,RELM_NotFoundRoute, route)
       AppRoutes.Article id ->
-        RELM_ASSIGN_ON_DEMAND(RELM_ArticleRoute, route, id)
+        RELM_ASSIGN_ON_DEMAND(state,RELM_ArticleRoute, route, id)
       AppRoutes.ArticleList ->
-        RELM_ASSIGN_ON_DEMAND(RELM_ArticleListRoute, route)
+        RELM_ASSIGN_ON_DEMAND(state,RELM_ArticleListRoute, route)
 --       _ ->
 --         let
 --             _ = Debug.log "AppRouter unknown route " route
 --         in
 --           (state, Cmd.none, Nothing)
 
-RELM_UPDATE_WITH_EVENT(RELM_NotFoundRoute)
+RELM_UPDATE_WITH_EVENT(state,RELM_NotFoundRoute)
 updateOnEventFrom_NotFoundRoute :
   NotFoundRoute.Event -> State -> ( State, Cmd Action, Maybe Event )
 updateOnEventFrom_NotFoundRoute event state =
   (state, Cmd.none, Nothing)
 
-RELM_UPDATE_WITH_EVENT(RELM_ArticleRoute)
+RELM_UPDATE_WITH_EVENT(state,RELM_ArticleRoute)
 updateOnEventFrom_ArticleRoute :
   ArticleRoute.Event -> State -> ( State, Cmd Action, Maybe Event )
 updateOnEventFrom_ArticleRoute event state =
   (state, Cmd.none, Nothing)
-RELM_UPDATE_WITH_EVENT(RELM_ArticleListRoute)
+RELM_UPDATE_WITH_EVENT(state,RELM_ArticleListRoute)
 updateOnEventFrom_ArticleListRoute :
   ArticleListRoute.Event -> State -> ( State, Cmd Action, Maybe Event )
 updateOnEventFrom_ArticleListRoute event state =
@@ -147,11 +147,11 @@ viewRoute state =
     AppRoutes.Home ->
       text "Why Home?"
     AppRoutes.NotFound ->
-      RELM_VIEW(RELM_NotFoundRoute)
+      RELM_VIEW(state,RELM_NotFoundRoute)
     (AppRoutes.Article _) ->
-      RELM_VIEW(RELM_ArticleRoute)
+      RELM_VIEW(state,RELM_ArticleRoute)
     AppRoutes.ArticleList ->
-      RELM_VIEW(RELM_ArticleListRoute)
+      RELM_VIEW(state,RELM_ArticleListRoute)
 
 --     _ ->
 --       text <| "Unhandled Route" ++ toString state.route

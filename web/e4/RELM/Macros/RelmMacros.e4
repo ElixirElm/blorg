@@ -20,110 +20,106 @@ mainView state =
 
 -- RELM_UPDATE_ACTION action
 define( <!RELM_UPDATE_ACTION!>, <!
-define(<!ARG_ACTION!>, $1)dnl
-define(<!ARG_MODULE!>, $2)dnl
-define(<!ARG_FIELD!>, $3)dnl
-    $1 act ->
-      update_$1 act state!>
+define(<!ARG_STATE!>, $1)dnl
+define(<!ARG_ACTION!>, $2)dnl
+    $2 act ->
+      update_$2 act $1!>
     --)
 
 -- RELM_UPDATE_ACTION_WITHOUT_EVENT action
 define( <!RELM_UPDATE_ACTION_ADDING_EVENT!>, <!
-define(<!ARG_ACTION!>, $1)dnl
-define(<!ARG_MODULE!>, $2)dnl
-define(<!ARG_FIELD!>, $3)dnl
-    $1 act ->
-      withEvent <| update_$1 act state!>
+define(<!ARG_STATE!>, $1)dnl
+define(<!ARG_ACTION!>, $2)dnl
+    $2 act ->
+      withEvent <| update_$2 act $1!>
     --)
 
 -- RELM_DEF_GET_SET action, module, state.field
 define( <!RELM_DEF_GET_SET_DECLARE!>, <!-- Auto generated declaration
 define(<!ARG_ACTION!>, $1)dnl
 define(<!ARG_MODULE!>, $2)dnl
-define(<!ARG_FIELD!>, $3)dnl
 get_$1 : State -> Maybe $2.State
 set_$1 : $2.State -> State -> State
 !>)
 
 define( <!RELM_DEF_GET_SET!>, <!-- Auto generated get/set_$1
-define(<!ARG_ACTION!>, $1)dnl
-define(<!ARG_MODULE!>, $2)dnl
-define(<!ARG_FIELD!>, $3)dnl
-get_$1 : State -> Maybe $2.State
-get_$1 state = Just state.$3
+define(<!ARG_STATE!>, $1)dnl
+define(<!ARG_ACTION!>, $2)dnl
+define(<!ARG_MODULE!>, $3)dnl
+define(<!ARG_FIELD!>, $4)dnl
+get_$2 : State -> Maybe $3.State
+get_$2 $1 = Just $1.$4
 
-set_$1 : $2.State -> State -> State
-set_$1 value state = { state | $3 = value }
+set_$2 : $3.State -> State -> State
+set_$2 value $1 = { $1 | $4 = value }
 !>)
 
-define(<!RELM_ON_DEMAND_GET_SET!>, <!-- Auto generated get/set_$1
-define(<!ARG_ACTION!>, $1)dnl
-define(<!ARG_MODULE!>, $2)dnl
-define(<!ARG_FIELD!>, $3)dnl
-get_$1 : State -> Maybe $2.State
-get_$1 state =
-  case state.onDemand of
-    $1State mdl -> Just mdl
+define(<!RELM_ON_DEMAND_GET_SET!>, <!-- Auto generated get/set_$2
+define(<!ARG_STATE!>, $1)dnl
+define(<!ARG_ACTION!>, $2)dnl
+define(<!ARG_MODULE!>, $3)dnl
+get_$2 : State -> Maybe $3.State
+get_$2 $1 =
+  case $1.onDemand of
+    $2State mdl -> Just mdl
     _ -> Nothing
-set_$1 : $2.State -> State -> State
-set_$1 value state =
-  case state.onDemand of
-    $1State mdl ->
-      { state | onDemand = $1State value }
-    _ -> state
+set_$2 : $3.State -> State -> State
+set_$2 value $1 =
+  case $1.onDemand of
+    $2State mdl ->
+      { $1 | onDemand = $2State value }
+    _ -> $1
 !>)
 
 define(<!RELM_ASSIGN_ON_DEMAND!>, <!
-define(<!ARG_ACTION!>, $1)dnl
-define(<!ARG_MODULE!>, $2)dnl
-define(<!ARG_FIELD!>, $3)dnl
+define(<!ARG_STATE!>, $1)dnl
+define(<!ARG_ACTION!>, $2)dnl
+define(<!ARG_MODULE!>, $3)dnl
+define(<!ARG_ROUTE!>, $5)dnl
+define(<!ARG_ID!>, $6)dnl
           let
-            (subState, subCmd) = $2.init $5
+            (subState, subCmd) = $3.init $6
           in
-            ( {state
-              | onDemand = $1State subState
-              , route = $4
+            ( {$1
+              | onDemand = $2State subState
+              , route = $5
               }
-            , Cmd.map $1 subCmd
+            , Cmd.map $2 subCmd
             , Nothing
             )
 !>)
 
-define( <!RELM_DEF_FOCUS!>, <!
-Depreciated RELM_ DEF_ FOCUS
-!>)
-
 -- RELM_UPDATE_DEF action, module, state.field
-define( <!RELM_UPDATE_WITHOUT_EVENT!>, <!-- Auto generated update_$1
-define(<!ARG_ACTION!>, $1)dnl
-define(<!ARG_MODULE!>, $2)dnl
-define(<!ARG_FIELD!>, $3)dnl
-update_$1 : $2.Action -> State -> ( State, Cmd Action )
-update_$1 act state =
+define( <!RELM_UPDATE_WITHOUT_EVENT!>, <!-- Auto generated update_$2
+define(<!ARG_STATE!>, $1)dnl
+define(<!ARG_ACTION!>, $2)dnl
+define(<!ARG_MODULE!>, $3)dnl
+update_$2 : $3.Action -> State -> ( State, Cmd Action )
+update_$2 act $1 =
   let
-    (newValue, newCmd) = $2.update act (get_$1 state)
+    (newValue, newCmd) = $3.update act (get_$2 $1)
   in
-    (state |> set_$1 newValue, Cmd.map $1 newCmd)!>)
+    ($1 |> set_$2 newValue, Cmd.map $2 newCmd)!>)
 
 -- RELM_UPDATE_EVENT_DEF action, module, state.field
-define( <!RELM_UPDATE_WITH_EVENT!>, <!-- Auto generated update_$1
---   Expects: updateOnEventFrom_$1 newEvent myState
-define(<!ARG_ACTION!>, $1)dnl
-define(<!ARG_MODULE!>, $2)dnl
-define(<!ARG_FIELD!>, $3)dnl
-update_$1 : $2.Action -> State -> ( State, Cmd Action, Maybe Event )
-update_$1 act state =
+define( <!RELM_UPDATE_WITH_EVENT!>, <!-- Auto generated update_$2
+--   Expects: updateOnEventFrom_$2 newEvent myState
+define(<!ARG_STATE!>, $1)dnl
+define(<!ARG_ACTION!>, $2)dnl
+define(<!ARG_MODULE!>, $3)dnl
+update_$2 : $3.Action -> State -> ( State, Cmd Action, Maybe Event )
+update_$2 act $1 =
   let
-    maybeOldValue = (get_$1 state)
+    maybeOldValue = (get_$2 $1)
     (myState, myCmd, maybeNewEvent) = case maybeOldValue of
       Nothing ->
-        (state, Cmd.none, Nothing)
+        ($1, Cmd.none, Nothing)
       Just oldValue ->
         let
           (newValue, newCmd, wantedEvent)
-            = $2.update act oldValue
+            = $3.update act oldValue
         in
-          ( state |> set_$1 newValue, Cmd.map $1 newCmd, wantedEvent)
+          ( $1 |> set_$2 newValue, Cmd.map $2 newCmd, wantedEvent)
   in
     case maybeNewEvent of
       Nothing ->
@@ -131,21 +127,21 @@ update_$1 act state =
       Just newEvent ->
         let
           (afterState, afterCmd, afterEvent)
-            = updateOnEventFrom_$1 newEvent myState
+            = updateOnEventFrom_$2 newEvent myState
         in
           (afterState, Cmd.batch [myCmd, afterCmd], afterEvent)!>)
 
 -- RELM_VIEW action, module, field
 define( <!RELM_VIEW!>, <!
-define(<!ARG_ACTION!>, $1)dnl
-define(<!ARG_MODULE!>, $2)dnl
-define(<!ARG_FIELD!>, $3)dnl
-            ( let maybeSub = get_$1 state
+define(<!ARG_STATE!>, $1)dnl
+define(<!ARG_ACTION!>, $2)dnl
+define(<!ARG_MODULE!>, $3)dnl
+            ( let maybeSub = get_$2 $1
               in
                               case maybeSub of
                                 Nothing -> text ""
                                 Just sub ->
-                                  Html.map $1 ($2.view sub)
+                                  Html.map $2 ($3.view sub)
             )
 !>)
 
