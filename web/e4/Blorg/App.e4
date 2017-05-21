@@ -73,8 +73,11 @@ delta2url state1 state2 =
 location2messages : Navigation.Location -> List Action
 location2messages location =
   let
-    maybeRoute = AppRoutes.toRoute <| String.dropLeft 1 location.hash
---     _ = Debug.log "maybeRoute " maybeRoute
+    relativeLink = String.dropLeft 1 location.hash
+    maybeRoute = AppRoutes.toRoute relativeLink
+    --_ = Debug.log "App, location" location
+    _ = Debug.log "App, relativeLink" relativeLink
+    _ = Debug.log "App, maybeRoute " maybeRoute
   in
     case maybeRoute of
       Nothing -> [ AppRouter <| GoTo NotFound]

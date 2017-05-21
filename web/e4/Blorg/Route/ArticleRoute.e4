@@ -101,7 +101,7 @@ loadArticle : Int -> Cmd Action
 loadArticle id =
   let
     url
-      = Debug.log "Loading"
+      = Debug.log "ArticleRoute, Loading"
       <| Config.apiHost ++ "/api/v1/articles/" ++ (toString id)
   in
     (Http.get url decodeArticleData)

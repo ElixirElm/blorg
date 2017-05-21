@@ -105,7 +105,7 @@ loadArticleList : Cmd Action
 loadArticleList =
   let
     url
-      = Debug.log "Loading"
+      = Debug.log "ArticleListRoute, Loading"
       <| Config.apiHost ++ "/api/v1/articles/"
   in
     (Http.get url decodeArticleListData)

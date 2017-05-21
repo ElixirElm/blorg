@@ -97,7 +97,7 @@ update action state =
 gotoRoute : AppRoutes -> State -> (State, Cmd Action, Maybe Event)
 gotoRoute route state =
   let
-    _ = Debug.log "gotoRoute " <| toString route
+    _ = Debug.log "Debug gotoRoute " <| toString route
   in
     case route of
       AppRoutes.NotInitialized -> (state, Cmd.none, Nothing)

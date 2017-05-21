@@ -44,4 +44,4 @@ toPath route =
     NotFound -> "/404"
     Home -> ""
     ArticleList -> "/articles/"
-    Article id -> "/article/" ++ (toString id)
+    Article id -> "/articles/" ++ (toString id)
