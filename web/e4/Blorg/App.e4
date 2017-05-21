@@ -22,7 +22,7 @@ define(<!RELM_AppRouter!>,
   <!<!AppRouter!>, <!AppRouter!>, <!appRouter!>!>)
 RELM_DEF_GET_SET(state,RELM_AppRouter)
 
--- MODEL
+-- STATE
 
 type alias State =
   { appRouter : AppRouter.State }
