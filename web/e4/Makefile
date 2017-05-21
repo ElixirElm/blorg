@@ -6,7 +6,7 @@ js: $(OUTPUT_DIR)Blorg/App.js #List all the outputs here if more than one
 
 ELM_MAKE_FLAGS =
 
-RELM_MACROS_DIR = $(SOURCE_E4_DIR)/RELM/Macros/
+RELM_MACROS_DIR = $(SOURCE_E4_DIR)RELM/Macros/
 E4_SRC = $(shell find $(SOURCE_E4_DIR) -type f -name '*.e4')
 M4_DEFS = $(shell find $(RELM_MACROS_DIR) -type f -name '*.e4')
 ELM_TARGETS=$(E4_SRC:$(SOURCE_E4_DIR)%.e4=$(TARGET_ELM_DIR)%.elm)
