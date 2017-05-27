@@ -23,3 +23,15 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 ##Usage
   * make #Compiles e4 files
   * mix phx.server
+
+##Docker Swarm
+  * docker stack deploy -c docker-compose.yml blorg
+  * docker ps | grep blorg_web #First column <blorg_web.id>
+  * docker exec -it <blorg_web.id> bash
+    * mix ecto.create
+    * mix ecto migrate
+    * mix run priv/repo/seeds.exs
+    * exit
+  Now goto <YourIP>:4000 on your host machine
+
+

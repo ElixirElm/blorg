@@ -38,6 +38,6 @@ config :blorg, Blorg.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "blorg_dev",
-  hostname: "localhost",
+  database: "myapp_dev",
+  hostname: "db",
   pool_size: 10

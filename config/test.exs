@@ -13,7 +13,7 @@ config :logger, level: :warn
 config :blorg, Blorg.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "postgres",
+  password: "",
   database: "blorg_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
