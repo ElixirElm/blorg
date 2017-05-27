@@ -1,4 +1,4 @@
-E4_DIR=./web/e4
+E4_DIR=./assets/e4
 
 e4ToJs:
 	$(MAKE) -C $(E4_DIR)

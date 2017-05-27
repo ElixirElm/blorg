@@ -11,7 +11,7 @@ defmodule Blorg do
       # Start the Ecto repository
       supervisor(Blorg.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(Blorg.Endpoint, []),
+      supervisor(Blorg.Web.Endpoint, []),
       # Start your own worker by calling: Blorg.Worker.start_link(arg1, arg2, arg3)
       # worker(Blorg.Worker, [arg1, arg2, arg3]),
     ]
@@ -22,10 +22,4 @@ defmodule Blorg do
     Supervisor.start_link(children, opts)
   end
 
-  # Tell Phoenix to update the endpoint configuration
-  # whenever the application is updated.
-  def config_change(changed, _new, removed) do
-    Blorg.Endpoint.config_change(changed, removed)
-    :ok
-  end
 end

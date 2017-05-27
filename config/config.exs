@@ -10,10 +10,10 @@ config :blorg,
   ecto_repos: [Blorg.Repo]
 
 # Configures the endpoint
-config :blorg, Blorg.Endpoint,
+config :blorg, Blorg.Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "BLdS41gloUszDcLPDXBGGG5eIpwqBVrYhmaOGV/I7Iwfm/iJU9fmQYyfgS44YNU9",
-  render_errors: [view: Blorg.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: Blorg.Web.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Blorg.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

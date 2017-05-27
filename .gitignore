@@ -24,6 +24,12 @@ node_modules/
 /priv/static/
 */priv/static/
 
+# Elm is M4 output
+assets/e4/output
+assets/e4/elm-stuff/build-artifacts
+
+
+
 # The config/prod.secret.exs file by default contains sensitive
 # data and you should not commit it into version control.
 #
