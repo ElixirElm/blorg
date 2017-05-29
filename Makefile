@@ -78,8 +78,8 @@ bash-prod:
 # DEPLOY LOCAL PRODUCTION SWARM TO TEST BEFORE PUSH
 blorg-local: docker-compose-local.yml
 	docker stack deploy -c $< $@
-CONTAINER_PROD=$(shell docker ps | grep blorg-local_web | tr -s ' ' | cut -d' ' -f1)
+CONTAINER_LOCAL=$(shell docker ps | grep blorg-local_web | tr -s ' ' | cut -d' ' -f1)
 attach-local:
-	docker attach --sig-proxy=false $(CONTAINER_PROD)
+	docker attach --sig-proxy=false $(CONTAINER_LOCAL)
 bash-local:
-	docker exec -it $(CONTAINER_PROD) bash
+	docker exec -it $(CONTAINER_LOCAL) bash

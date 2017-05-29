@@ -29,6 +29,6 @@ RUN \
 
 COPY ./Makefile $PHOENIX_DIR/
 COPY ./assets $PHOENIX_DIR/assets
-# RUN \
-#   make && make clean && \
-#   (cd assets && brunch build --production)
+RUN \
+  make && make clean && \
+  (cd assets && brunch build --production)

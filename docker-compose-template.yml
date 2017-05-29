@@ -15,7 +15,7 @@ services:
     environment:
       - MIX_ENV=${MIX_ENV}
       - PORT=4000
-    command: tail -f /var/log/dmesg
+    command: mix phx.server
     ports:
       - "4000:4000" #DEV
       - "80:4000"   #PROD

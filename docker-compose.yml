@@ -13,7 +13,7 @@ services:
     environment:
       - MIX_ENV=prod
       - PORT=4000
-    command: tail -f /var/log/dmesg
+    command: mix phx.server
     ports:
       - "80:4000"   #PROD
     depends_on:
