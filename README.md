@@ -20,7 +20,7 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
 
-###Docker Swarm for Development
+### Docker Swarm for Development
 ```bash
 sudo mkdir -p /var/vol/blorg-dev/postgres/data
 sudo chown -R <you>:<you> /var/vol/blorg-dev/postgres/data
@@ -35,7 +35,7 @@ make attach-dev #See mix log
 ```
   You can edit the files in host machine to see the changes while the development swarm is working. Call make after editing e4 files.
 
-##Docker Swarm for Production
+### Docker Swarm for Production
 ```bash
 sudo mkdir -p /var/vol/blorg-prod/postgres/data
 sudo chown -R <you>:<you> /var/vol/blorg-prod/postgres/data
@@ -49,7 +49,7 @@ make bash-prod
 make attach-prod #See mix log
 ```
 
-##make
+### make
  * (default): Compiles elm app
  * blorg-dev: Deploys development stack
  * blorg-prod: Deploys production stack
