@@ -31,4 +31,5 @@ COPY ./Makefile $PHOENIX_DIR/
 COPY ./assets $PHOENIX_DIR/assets
 RUN \
   make && make clean && \
-  (cd assets && brunch build --production)
+  (cd assets && brunch build --production) && \
+  mix phx.digest

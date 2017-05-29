@@ -34,12 +34,14 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
   You can edit the files in host machine to see the changes while the development swarm is working. Call make after editing e4 files.
 
 ##Docker Swarm for Production
-  * sudo mkdir -p /var/vol/blorg-prod/postgres/data
-  * sudo chown -R <you>:<you> /var/vol/blorg-prod/postgres/data
-  * make blorg-prod # Deploys swarm
-  * make bash-prod
-    * make init
-    * exit
+```bash
+sudo mkdir -p /var/vol/blorg-prod/postgres/data
+sudo chown -R <you>:<you> /var/vol/blorg-prod/postgres/data
+make blorg-prod # Deploys swarm
+make bash-prod
+  make init
+  exit
+```
   Now goto <YourIP>:80 on your host machine
 
   * make attach-prod #See mix log
@@ -47,7 +49,6 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
 ##make
  * (default): Compiles elm app
- * docker: Rebuilds docker images
  * blorg-dev: Deploys development stack
  * blorg-prod: Deploys production stack
 

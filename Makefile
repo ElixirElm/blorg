@@ -9,7 +9,7 @@ clean:
 # Initialize Fresh Phoenix
 init:
 	mix ecto.create
-	mix ecto migrate
+	mix ecto.migrate
 	mix run priv/repo/seeds.exs
 
 # Build docker containers
