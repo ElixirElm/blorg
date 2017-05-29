@@ -53,6 +53,9 @@ make attach-prod #See mix log
  * (default): Compiles elm app
  * blorg-dev: Deploys development stack
  * blorg-prod: Deploys production stack
+ * docker-local: Builds new local image
+ * blorg-local: Deploys local image to stack
+
 
 
 
