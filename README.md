@@ -51,6 +51,7 @@ make attach-prod #See mix log
 
 ### make
  * (default): Compiles elm app
+ * init: Creates, migrates and seeds the database
  * blorg-dev: Deploys development stack
  * blorg-prod: Deploys production stack
  * docker-local: Builds new local image
