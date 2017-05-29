@@ -9,11 +9,11 @@ services:
     deploy:
       replicas: 1
   web:
-    image: elixirelm/blorg:latest
+    image: elixirelm/blorg:local
     environment:
       - MIX_ENV=prod
       - PORT=4000
-    command: tail -f /var/log/dmesg
+    command: mix phx.server
     ports:
       - "80:4000"   #PROD
     depends_on:

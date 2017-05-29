@@ -45,4 +45,6 @@ project-resources
 a.out
 .vagrant
 
+assets/e4/npm-debug.log
+
 

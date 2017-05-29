@@ -1,7 +1,11 @@
 FROM elixirelm/phoenix-container:1.3
 EXPOSE 4000
+EXPOSE 443
 
-ENV PHOENIX_DIR "/usr/local/src/phoenix/myapp"
+ENV PORT "4000"
+ENV PHOENIX_DIR "/myapp"
+ENV MIX_ENV "prod"
+ENV PATH $PATH:$PHOENIX_DIR/assets/node_modules/elm/binwrappers:$PHOENIX_DIR/assets/node_modules/brunch/bin
 
 RUN mkdir -p $PHOENIX_DIR/assets
 
@@ -13,14 +17,18 @@ RUN \
   mix local.rebar --force && \
   mix deps.get
 
-WORKDIR $PHOENIX_DIR/assets
 COPY assets/package.json $PHOENIX_DIR/assets/
 RUN \
-  npm install --quiet
+  (cd assets && npm install --quiet)
 
-WORKDIR $PHOENIX_DIR
-COPY . $PHOENIX_DIR
-RUN mix compile
-RUN make
+COPY ./config $PHOENIX_DIR/config
+COPY ./lib $PHOENIX_DIR/lib
+COPY ./priv $PHOENIX_DIR/priv
+RUN \
+  MIX_ENV=prod mix compile
 
-#CMD ["mix", "phx.server"]
+COPY ./Makefile $PHOENIX_DIR/
+COPY ./assets $PHOENIX_DIR/assets
+# RUN \
+#   make && make clean && \
+#   (cd assets && brunch build --production)
