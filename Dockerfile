@@ -13,8 +13,6 @@ WORKDIR $PHOENIX_DIR
 COPY mix.exs $PHOENIX_DIR/
 COPY mix.lock $PHOENIX_DIR/
 RUN \
-  mix local.hex --force && \
-  mix local.rebar --force && \
   mix deps.get
 
 COPY assets/package.json $PHOENIX_DIR/assets/
