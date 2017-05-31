@@ -3,9 +3,8 @@ EXPOSE 4000
 EXPOSE 443
 
 ENV PORT "4000"
-ENV PHOENIX_DIR "/myapp"
-ENV MIX_ENV "prod"
-ENV PATH $PATH:$PHOENIX_DIR/assets/node_modules/elm/binwrappers:$PHOENIX_DIR/assets/node_modules/brunch/bin
+
+ENV PATH $PATH:$PHOENIX_DIR/assets/node_modules/elm/binwrappers:$PHOENIX_DIR/node_modules/brunch/bin
 
 RUN mkdir -p $PHOENIX_DIR/assets
 
