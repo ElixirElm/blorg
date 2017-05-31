@@ -4,28 +4,28 @@ EXPOSE 443
 
 ENV PORT "4000"
 
-ENV PATH $PATH:$PHOENIX_DIR/assets/node_modules/elm/binwrappers:$PHOENIX_DIR/node_modules/brunch/bin
+ENV PATH $PATH:$MYAPP_DIR/assets/node_modules/elm/binwrappers:$MYAPP_DIR/node_modules/brunch/bin
 
-RUN mkdir -p $PHOENIX_DIR/assets
+RUN mkdir -p $MYAPP_DIR/assets
 
-WORKDIR $PHOENIX_DIR
-COPY mix.exs $PHOENIX_DIR/
-COPY mix.lock $PHOENIX_DIR/
+WORKDIR $MYAPP_DIR
+COPY mix.exs $MYAPP_DIR/
+COPY mix.lock $MYAPP_DIR/
 RUN \
   mix deps.get
 
-COPY assets/package.json $PHOENIX_DIR/assets/
+COPY assets/package.json $MYAPP_DIR/assets/
 RUN \
   (cd assets && npm install --quiet)
 
-COPY ./config $PHOENIX_DIR/config
-COPY ./lib $PHOENIX_DIR/lib
-COPY ./priv $PHOENIX_DIR/priv
+COPY ./config $MYAPP_DIR/config
+COPY ./lib $MYAPP_DIR/lib
+COPY ./priv $MYAPP_DIR/priv
 RUN \
   MIX_ENV=prod mix compile
 
-COPY ./Makefile $PHOENIX_DIR/
-COPY ./assets $PHOENIX_DIR/assets
+COPY ./Makefile $MYAPP_DIR/
+COPY ./assets $MYAPP_DIR/assets
 RUN \
   make && make clean && \
   (cd assets && brunch build --production) && \

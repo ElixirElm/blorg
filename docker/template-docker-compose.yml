@@ -9,15 +9,15 @@ services:
     deploy:
       replicas: 1
   web:
-    image: elixirelm/blorg:${WEB_TAG}
-    volumes: #DEV
-      - .:/myapp #DEV
+    image: elixirelm/blorg:${APP_IMG_TAG}
+    volumes:     #NO_prod#NO_local
+      - .:/myapp #NO_prod#NO_local
     environment:
-      - MIX_ENV=${MIX_ENV}
+      - MIX_ENV=${APP_MIX_ENV}
       - PORT=4000
     command: mix phx.server
     ports:
-      - "4000:4000" #DEV
-      - "80:4000"   #PROD
+      - "4000:4000" #NO_prod#NO_local
+      - "80:4000"   #NO_dev
     depends_on:
       - db

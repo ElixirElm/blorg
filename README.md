@@ -20,18 +20,20 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
 
+## Usage
+
 ### Docker Swarm for Development
 ```bash
 sudo mkdir -p /var/vol/blorg-dev/postgres/data
 sudo chown -R <you>:<you> /var/vol/blorg-dev/postgres/data
-make blorg-dev # Deploys swarm
-make bash-dev  # Executes bash in web service
+make docker-deploy-env-dev # Deploys swarm
+make docker-bash-service-blorg-web_dev  # Executes bash in web service
     * make init
     * exit
 ```
   Now goto <YourIP>:4000 on your host machine
 ```bash
-make attach-dev #See mix log
+make docker-attach-service-blorg-web_dev #See mix log
 ```
   You can edit the files in host machine to see the changes while the development swarm is working. Call make after editing e4 files.
 
@@ -39,24 +41,30 @@ make attach-dev #See mix log
 ```bash
 sudo mkdir -p /var/vol/blorg-prod/postgres/data
 sudo chown -R <you>:<you> /var/vol/blorg-prod/postgres/data
-make blorg-prod # Deploys swarm
-make bash-prod
+make docker-deploy-env-prod # Deploys swarm
+make docker-bash-service-blorg-web_prod
   make init
   exit
 ```
   Now goto <YourIP>:80 on your host machine
 ```bash
-make attach-prod #See mix log
+make docker-attach-service-blorg-web_prod #See mix log
 ```
 
-### make
- * (default): Compiles elm app
- * init: Creates, migrates and seeds the database
- * blorg-dev: Deploys development stack
- * blorg-prod: Deploys production stack
- * docker-local: Builds new local image
- * blorg-local: Deploys local image to stack
+## Developing a New Local Docker Image
+If you edit docker/tempate-docker-compose.yml
+```
+make docker-compose-files
+```
+generates files for each env (prod, dev, local).
 
+```
+make docker-build-local-image-elixirelm/blorg
+```
+generates the local image. You can tag it for versioning and pushing later.
+Use "local" instead of "prod" in "Deploying Swarm for Production" to test deploying with the local image
 
-
-
+```
+make docker-clean
+```
+cleans unused images after developing and testing local images
