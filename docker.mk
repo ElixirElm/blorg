@@ -1,3 +1,4 @@
+# Author: umur.ozkul@gmail.com
 # Returns container id given a service name
 CONTAINER_ID=$(shell docker ps | grep $(1) | tr -s ' ' | cut -d' ' -f1)
 
@@ -34,8 +35,8 @@ docker-compose-files: docker/docker-compose-local.yml docker/docker-compose-prod
 
 # make docker-build-local-image-<image>
 #   Only local image is built here. The other images are tagged versions of it.
-docker-build-local-image-%: docker/docker-compose-local.yml
-	docker build -t $*:local .
+docker-build-env-%: docker/docker-compose-%.yml docker-release.tar
+	docker build -t $(IMAGE_NAME):local .
 
 # REMOVE DOCKER GARBAGE
 .PHONY: docker-clean docker-clean-containers docker-clean-images
