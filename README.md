@@ -58,13 +58,22 @@ make docker-compose-files
 ```
 generates files for each env (prod, dev, local).
 
+
+If you have edited the Dockerfile
 ```
-make docker-build-local-image-elixirelm/blorg
+make docker-build-env-local IMAGE_NAME=elixirelm/blorg
 ```
-generates the local image. You can tag it for versioning and pushing later.
-Use "local" instead of "prod" in "Deploying Swarm for Production" to test deploying with the local image
+generates the local image. You can tag it prod or dev for versioning and pushing later.
+Use "local" instead of "prod" in "Deploying Swarm for Production" to test deploying with the local image. If you edit the Dockerfile then you cannot test :prod image directly before pushing. Docker will always use the version from registry.
+
 
 ```
 make docker-clean
 ```
 cleans unused images after developing and testing local images
+
+
+You can immediately check a build before deploying to swarm using
+```
+make docker-build-env-local IMAGE_NAME=elixirelm/blorg && docker run -it elixirelm/blorg:local bash
+```

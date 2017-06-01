@@ -1,3 +1,4 @@
+# Author: umur.ozkul@gmail.com
 version: '3'
 services:
   db:
@@ -15,6 +16,6 @@ services:
       - PORT=4000
     command: mix phx.server
     ports:
-      - "80:4000"   #NO_dev
+      - "80:80"   #NO_dev
     depends_on:
       - db
