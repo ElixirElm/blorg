@@ -17,9 +17,9 @@ docker-bash-service-%:
 ## DEPLOYING A SERVICE
 
 # make docker-deploy-<env>
-.PHONY: deploy-env-%
+.PHONY: docker-deploy-env-%
 docker-deploy-env-%: docker/docker-compose-%.yml
-	docker stack deploy -c $< $@
+	docker stack deploy -c $< $(STACK_NAME)-$*
 
 ## BUILDING A SERVICE
 
