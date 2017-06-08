@@ -6,7 +6,8 @@ e4ToJs:
 clean:
 	$(MAKE) -C $(E4_DIR) clean
 
-include .phoenix-bin/phoenix-bin.mk .phoenix-bin/docker.mk
+include .phoenix-bin/phoenix-bin.mk
+include .docker-bin/docker.mk
 
 
 
