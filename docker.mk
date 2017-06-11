@@ -14,6 +14,14 @@ docker-attach-service-%:
 docker-bash-service-%:
 	docker exec -it $(call CONTAINER_ID, $*) bash
 
+.PHONY: docker-sh-service-%
+docker-sh-service-%:
+	docker exec -it $(call CONTAINER_ID, $*) sh
+
+.PHONY: docker-exec-service-%
+docker-exec-service-%:
+	docker exec -it $(call CONTAINER_ID, $*) $(EXEC)
+	
 ## DEPLOYING A SERVICE
 
 # make docker-deploy-<env>
