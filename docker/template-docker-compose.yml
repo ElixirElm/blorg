@@ -10,7 +10,7 @@ services:
     deploy:
       replicas: 1
   web:
-    image: elixirelm/blorg:${APP_IMG_TAG}
+    image: elixirelm/blorg:${APP_IMAGE_TAG}
     volumes:     #NO_prod#NO_local
       - .:/myapp #NO_prod#NO_local
     environment:

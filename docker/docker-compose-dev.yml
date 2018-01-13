@@ -1,3 +1,4 @@
+# Author: umur.ozkul@gmail.com
 version: '3'
 services:
   db:
@@ -9,7 +10,7 @@ services:
     deploy:
       replicas: 1
   web:
-    image: elixirelm/blorg:
+    image: elixirelm/blorg:latest
     volumes:     #NO_prod#NO_local
       - .:/myapp #NO_prod#NO_local
     environment:
