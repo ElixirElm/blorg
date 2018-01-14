@@ -24,4 +24,4 @@ docker-release.tar: compile
 	  --exclude=$@ \
 	  --exclude-backups \
 	  --exclude-vcs \
-	  --exclude-vcs-ignores \
+	  --exclude-vcs-ignores
