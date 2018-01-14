@@ -13,4 +13,3 @@ RUN \
   tar -xf /tmp/docker-release.tar && \
   MIX_ENV=prod mix compile && \
   rm /tmp/docker-release.tar
-
