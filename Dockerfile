@@ -1,9 +1,8 @@
 FROM elixirelm/phoenix-container:1.3
-EXPOSE 4000
-EXPOSE 80
-EXPOSE 443
+EXPOSE 4101
+EXPOSE 8101
 
-ENV PORT "80"
+# ENV PORT "80"
 
 ENV PATH $PATH:$MYAPP_DIR/assets/node_modules/elm/binwrappers:$MYAPP_DIR/assets/node_modules/brunch/bin
 

@@ -6,16 +6,16 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - /var/vol/blorg-/postgres/data:/var/lib/postgresql/data
+      - /var/vol/blorg-prod/postgres/data:/var/lib/postgresql/data
     deploy:
       replicas: 1
   web:
-    image: elixirelm/blorg:
+    image: elixirelm/blorg:local
     environment:
       - MIX_ENV=prod
-      - PORT=4000
-    command: mix phx.server
+      - PORT=8101
+    command: mix phx.server #NO_dev
     ports:
-      - "80:80"   #NO_dev
+      - "8101:8101" #NO_dev
     depends_on:
       - db

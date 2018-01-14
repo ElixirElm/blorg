@@ -27,7 +27,7 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 sudo mkdir -p /var/vol/blorg-dev/postgres/data
 sudo chown -R <you>:<you> /var/vol/blorg-dev/postgres/data
 make docker-deploy-env-dev # Deploys swarm
-make docker-bash-service-blorg-web_dev  # Executes bash in web service
+make docker-bash-service-blorg_web_dev  # Executes bash in web service
     * make init
     * exit
 ```
@@ -77,3 +77,11 @@ You can immediately check a build before deploying to swarm using
 ```
 make docker-build-env-local IMAGE_NAME=elixirelm/blorg && docker run -it elixirelm/blorg:local bash
 ```
+
+### TODO
+npm install:
+npm WARN deprecated babel-preset-es2016@6.24.1: 🙌
+npm WARN deprecated babel-preset-es2015@6.24.1: 🙌
+npm WARN deprecated coffee-script@1.12.7: CoffeeScript on NPM has moved to "coffeescript" (no hyphen)
+npm WARN deprecated node-uuid@1.4.8: Use uuid module instead
+

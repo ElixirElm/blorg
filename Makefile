@@ -6,6 +6,8 @@ e4ToJs:
 clean:
 	$(MAKE) -C $(E4_DIR) clean
 
+DOCKER_STACK_NAME:=blorg
+IMAGE_NAME:=elixirelm/blorg
 include .phoenix-bin/phoenix-bin.mk
 include .docker-bin/docker.mk
 
