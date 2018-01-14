@@ -1,6 +1,6 @@
 # Author: umur.ozkul@gmail.com
 # Returns container id given a service name
-CONTAINER_ID=$(shell docker ps | grep $(1) | tr -s ' ' | cut -d' ' -f1)
+CONTAINER_ID=$(shell docker ps | grep $(1) | tr -s ' ' | cut -d' ' -f1 | head -n1)
 
 ## ACCESSING A SERVICE
 
@@ -27,7 +27,8 @@ docker-exec-service-%:
 # make docker-deploy-<env>
 .PHONY: docker-deploy-env-%
 docker-deploy-env-%: docker/docker-compose-%.yml
-	docker stack deploy -c $< $(STACK_NAME)-$*
+	echo Deploying stack $(DOCKER_STACK_NAME)_$*
+	docker stack deploy -c $< $(DOCKER_STACK_NAME)_$*
 
 ## BUILDING A SERVICE
 
@@ -43,7 +44,7 @@ docker-compose-files: docker/docker-compose-local.yml docker/docker-compose-prod
 
 # make docker-build-local-image-<image>
 #   Only local image is built here. The other images are tagged versions of it.
-docker-build-env-%: docker/docker-compose-%.yml docker-release.tar
+docker-build: docker-release.tar
 	docker build -t $(IMAGE_NAME):local .
 
 # REMOVE DOCKER GARBAGE
