@@ -1,4 +1,4 @@
-FROM elixirelm/phoenix-container:1.3
+FROM elixirelm/phoenix-container:1.3_1.5.3
 EXPOSE 4101
 EXPOSE 8101
 
